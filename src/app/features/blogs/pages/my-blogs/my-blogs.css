@@ -1,0 +1,145 @@
+.my-blogs-page {
+	min-height: calc(100vh - 64px);
+	padding: 36px clamp(16px, 3vw, 40px) 64px;
+	background: #eef8fc;
+}
+
+.my-blogs-header,
+.overview,
+.blogs-grid,
+.empty-state {
+	max-width: 1200px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.error-message {
+	max-width: 1200px;
+	margin: 32px auto;
+	color: #527080;
+	text-align: center;
+}
+
+.page-status {
+	max-width: 1200px;
+	margin: 32px auto;
+	color: #527080;
+	text-align: center;
+}
+
+.error-message { color: #b3261e; }
+
+.my-blogs-header {
+	max-width: 1200px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 24px;
+	margin-bottom: 32px;
+}
+
+.eyebrow {
+	display: block;
+	color: #087ea4;
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	line-height: 1.25;
+	text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+	margin: 0;
+}
+
+h1 {
+	margin: 8px 0 0;
+	color: #123447;
+	font-size: clamp(2rem, 5vw, 3rem);
+	line-height: 1.12;
+}
+
+.my-blogs-header p {
+	margin-top: 12px;
+	color: #527080;
+	line-height: 1.5;
+}
+
+.create-button {
+	min-height: 44px;
+	background: #1688b0;
+	color: #ffffff;
+	white-space: nowrap;
+}
+
+.create-button:hover {
+	background: #0d6f93;
+}
+
+.overview {
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	margin-bottom: 32px;
+	padding: 20px 24px;
+	border: 1px solid #c8e8f5;
+	background: #ffffff;
+}
+
+.overview-item {
+	display: grid;
+	gap: 4px;
+}
+
+.overview-item strong {
+	color: #123447;
+	font-size: 1.2rem;
+}
+
+.overview-item span {
+	color: #527080;
+	font-size: 0.9rem;
+}
+
+.overview-divider {
+	width: 1px;
+	height: 36px;
+	background: #c8e8f5;
+}
+
+.blogs-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+	gap: 24px;
+}
+
+.empty-state {
+	display: grid;
+	justify-items: center;
+	gap: 12px;
+	padding: 64px 24px;
+	border: 1px dashed #9ed1e3;
+	color: #527080;
+	text-align: center;
+}
+
+.empty-state h2 {
+	color: #123447;
+}
+
+.empty-state .create-button {
+	margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+	.my-blogs-header {
+		align-items: stretch;
+		flex-direction: column;
+	}
+
+	.create-button {
+		width: 100%;
+	}
+}

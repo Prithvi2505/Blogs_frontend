@@ -1,0 +1,34 @@
+<mat-toolbar>
+  <span>Blogs</span>
+
+  <span class="example-spacer"></span>
+
+  <a mat-button routerLink="/">Home</a>
+  <a mat-button routerLink="/blogs">All Blogs</a>
+  @if (auth.isLoggedIn()) {
+    @if (auth.user()?.role === 'author') {
+      <a mat-button routerLink="/blogs/create">Create Blog</a>
+      <a mat-button routerLink="/blogs/me">My Blogs</a>
+    }
+    <button mat-icon-button class="!relative !mx-2 !h-[38px] !w-[38px] !rounded-full !border !border-[#6a9cac] !bg-[#f1a96b] !font-bold !text-[#173c4a]"
+      [matMenuTriggerFor]="profileMenu"
+      [attr.aria-label]="'Open profile for ' + (auth.user()?.name ?? 'your account')"
+      [title]="'Profile: ' + (auth.user()?.name ?? 'your account')">
+      <span aria-hidden="true">{{ auth.user()?.name?.charAt(0)?.toUpperCase() ?? '?' }}</span>
+      <mat-icon class="!absolute !-bottom-1 !-right-1 !h-4 !w-4 !rounded-full !bg-white !text-[16px]">arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #profileMenu="matMenu" panelClass="!rounded-lg !border !border-[#b9e3f5] !bg-[#eaf7fb] !shadow-[0_10px_24px_rgba(18,52,71,0.16)]">
+      <a mat-menu-item class="!text-[#123447] hover:!bg-[#d7eff8] focus:!bg-[#d7eff8]" routerLink="/profile">
+        <mat-icon class="!text-[#087ea4]">person</mat-icon>
+        <span>Profile</span>
+      </a>
+      <button mat-menu-item class="!text-[#123447] hover:!bg-[#d7eff8] focus:!bg-[#d7eff8]" type="button" (click)="logout()">
+        <mat-icon class="!text-[#087ea4]">logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  } @else {
+    <a mat-button routerLink="/login">Login</a>
+    <a mat-button routerLink="/register">Register</a>
+  }
+</mat-toolbar>

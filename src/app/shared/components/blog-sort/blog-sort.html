@@ -1,0 +1,8 @@
+<mat-form-field class="w-full sm:max-w-xs" appearance="outline" subscriptSizing="dynamic">
+	<mat-label>Sort blogs</mat-label>
+	<mat-select [value]="selected()" (selectionChange)="select($event.value)">
+		<mat-option value="updated">Recently updated</mat-option>
+		<mat-option value="likes">Most liked</mat-option>
+		<mat-option value="comments">Most commented</mat-option>
+	</mat-select>
+</mat-form-field>

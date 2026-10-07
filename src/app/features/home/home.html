@@ -1,0 +1,61 @@
+<main class="home-page">
+	<section class="hero-section">
+		<div class="hero-copy">
+			<span class="eyebrow">A place for good ideas</span>
+			<h1>Read deeply.<br>Write freely.</h1>
+			<p class="hero-description">Blogs is a simple space for curious people to share thoughtful stories, useful lessons, and the ideas that stay with us.</p>
+			<div class="hero-actions">
+				<a mat-flat-button class="primary-button" routerLink="/blogs">Explore all blogs</a>
+				<a mat-stroked-button class="secondary-button" routerLink="/register">Start writing</a>
+			</div>
+		</div>
+
+		<div class="hero-image-wrap">
+			<img
+				src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=900&q=75&auto=format&fit=crop"
+				alt="Notebook and pen on a writing desk"
+				width="900"
+				height="700"
+				fetchpriority="high">
+			<span class="image-caption">Make room for the next thought.</span>
+		</div>
+	</section>
+
+	<section class="purpose-section" aria-labelledby="purpose-title">
+		<div>
+			<span class="eyebrow">Why Blogs</span>
+			<h2 id="purpose-title">A quieter corner of the internet.</h2>
+		</div>
+		<p>Discover perspectives from other people, save the ideas that move you, and add your own voice to an ongoing collection of human stories.</p>
+	</section>
+
+	<section class="sample-section" aria-labelledby="sample-title">
+		<div class="section-heading">
+			<div>
+				<span class="eyebrow">From the community</span>
+				<h2 id="sample-title">A few places to begin</h2>
+			</div>
+			<a mat-button class="text-button" routerLink="/blogs">View all blogs</a>
+		</div>
+
+		<div class="sample-grid">
+			@for (blog of sampleBlogs(); track blog.id) {
+				<app-blog-card [blog]="blog" />
+			}
+		</div>
+	</section>
+
+	@if (!auth.isLoggedIn()) {
+	<section class="join-section">
+		<div>
+			<span class="eyebrow">Your turn</span>
+			<h2>Have something worth sharing?</h2>
+			<p>Create an account and publish your first blog.</p>
+		</div>
+		<div class="join-actions">
+			<a mat-flat-button class="primary-button" routerLink="/register">Create an account</a>
+			<a mat-button class="text-button" routerLink="/login">Log in</a>
+		</div>
+	</section>
+	}
+</main>

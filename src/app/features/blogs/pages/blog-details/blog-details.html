@@ -1,0 +1,54 @@
+@if (isLoading()) {
+	<main class="detail-page page-status"><p>Loading blog...</p></main>
+} @else if (blog(); as currentBlog) {
+	<main class="detail-page">
+		<a mat-button routerLink="/blogs" class="back-link">&larr; Back to all blogs</a>
+
+		<article class="blog-article">
+			<header class="article-header">
+				<span class="eyebrow">Blog article</span>
+				<h1>{{ currentBlog.title }}</h1>
+				<p class="article-meta">Written by <strong>{{ currentBlog.author_name || 'Author #' + currentBlog.created_by }}</strong> · {{ currentBlog.created_at | date:'longDate' }}</p>
+				@if (auth.isLoggedIn()) {
+					<div class="mt-4 flex items-center gap-5">
+						<button type="button" class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[#087ea4] hover:bg-[#eef8fc] disabled:opacity-60"
+							[attr.aria-label]="(currentBlog.liked_by_me ? 'Unlike' : 'Like') + ' this blog. ' + currentBlog.like_count + ' likes'"
+							[attr.aria-pressed]="currentBlog.liked_by_me" [disabled]="isUpdatingLike()" (click)="toggleLike()">
+							<mat-icon [style.font-family]="currentBlog.liked_by_me ? 'Material Icons' : 'Material Symbols Outlined'" [style.color]="currentBlog.liked_by_me ? '#d32f2f' : '#087ea4'">{{ currentBlog.liked_by_me ? 'favorite' : 'favorite_border' }}</mat-icon>
+							<span [style.color]="currentBlog.liked_by_me ? '#d32f2f' : null">{{ currentBlog.like_count }}</span>
+						</button>
+						<a class="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[#527080] hover:bg-[#eef8fc]" href="#comments-title" [attr.aria-label]="currentBlog.comment_count + ' comments'">
+							<mat-icon>chat_bubble_outline</mat-icon>
+							<span>{{ currentBlog.comment_count }}</span>
+						</a>
+					</div>
+				}
+				@if (currentBlog.tags?.length) {
+					<div class="mt-[18px] flex flex-wrap gap-2" aria-label="Blog tags">
+						@for (tag of currentBlog.tags; track tag) {
+							<span class="rounded-full border border-[#c8e8f5] bg-[#eef8fc] px-3 py-1 text-[0.82rem] font-semibold text-[#087ea4]">#{{ tag }}</span>
+						}
+					</div>
+				}
+				@if (auth.canEdit(currentBlog.created_by)) {
+					<a mat-flat-button class="edit-button" [routerLink]="['/blogs', currentBlog.id, 'edit']">Edit blog</a>
+				}
+			</header>
+
+			<div class="article-rule"></div>
+
+			<section class="article-content">
+				<p>{{ currentBlog.description }}</p>
+				<p>This article explores the ideas behind the story and the small choices that make a meaningful difference. Take your time, follow the thread, and make the lessons your own.</p>
+				<p>Good writing leaves room for curiosity. Return to this article whenever you need a fresh perspective or a little inspiration for what comes next.</p>
+			</section>
+		</article>
+
+		<app-blog-comments [blogId]="currentBlog.id" (commentCountChange)="updateCommentCount($event)" />
+	</main>
+} @else {
+	<main class="detail-page not-found">
+		<h1>{{ errorMessage() || 'Blog not found' }}</h1>
+		<a mat-button routerLink="/blogs">Return to all blogs</a>
+	</main>
+}
