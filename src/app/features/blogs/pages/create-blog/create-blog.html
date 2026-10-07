@@ -1,0 +1,45 @@
+<main class="create-page">
+	<form class="create-form" [formGroup]="form" (ngSubmit)="submit()">
+		<div class="form-heading">
+			<span class="eyebrow">Write something</span>
+			<h1>Create a blog</h1>
+			<p>Share an idea, story, or lesson with the community.</p>
+		</div>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Title</mat-label>
+			<input matInput formControlName="title" maxlength="120">
+			<mat-hint align="end">{{ form.controls.title.value.length }}/120</mat-hint>
+			@if (form.controls.title.hasError('required')) {
+				<mat-error>Title is required.</mat-error>
+			}
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Content</mat-label>
+			<textarea matInput formControlName="description" rows="10"></textarea>
+			@if (form.controls.description.hasError('required')) {
+				<mat-error>Content is required.</mat-error>
+			} @else if (form.controls.description.hasError('minlength')) {
+				<mat-error>Content must be at least 20 characters.</mat-error>
+			}
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Tags</mat-label>
+			<input matInput formControlName="tags" placeholder="python, travel, ideas">
+			<mat-hint>Separate tags with commas.</mat-hint>
+		</mat-form-field>
+
+		@if (errorMessage) {
+			<p class="error-message" role="alert">{{ errorMessage }}</p>
+		}
+
+		<div class="form-actions">
+			<a mat-button routerLink="/blogs">Cancel</a>
+			<button mat-flat-button class="submit-button" type="submit" [disabled]="isSubmitting">
+				<span>{{ isSubmitting ? 'Publishing...' : 'Publish blog' }}</span>
+			</button>
+		</div>
+	</form>
+</main>

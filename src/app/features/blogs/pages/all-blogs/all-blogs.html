@@ -1,0 +1,31 @@
+<main class="blogs-page">
+	<header class="blogs-heading">
+		<span class="eyebrow">Discover</span>
+		<h1>All blogs</h1>
+		<p>Fresh ideas and stories from our community.</p>
+		<div class="mt-6 grid grid-cols-1 items-center gap-4 sm:grid-cols-[minmax(0,1fr)_240px]">
+			<app-blog-search (queryChange)="onSearch($event)" />
+			<app-blog-sort (sortChange)="onSortChange($event)" />
+		</div>
+	</header>
+
+	@if (blogs$ | async; as blogs) {
+		@let filteredBlogs = filterBlogs(blogs);
+		@if (errorMessage) {
+			<p class="error-message" role="alert">{{ errorMessage }}</p>
+		} @else if (filteredBlogs.length) {
+			<section class="blogs-grid" aria-label="All blogs">
+				@for (blog of filteredBlogs; track blog.id) {
+					<app-blog-card [blog]="blog" [showVisibilityToggle]="auth.user()?.role === 'admin'"
+						(deleted)="removeBlog($event)" />
+				}
+			</section>
+		} @else {
+			<p class="empty-message">{{ searchQuery() ? 'No blogs match that search.' : 'No blogs have been published yet.' }}</p>
+		}
+	} @else if (errorMessage) {
+		<p class="error-message" role="alert">{{ errorMessage }}</p>
+	} @else {
+		<p class="empty-message">No blogs have been published yet.</p>
+	}
+</main>

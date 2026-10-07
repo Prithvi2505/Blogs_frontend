@@ -1,0 +1,52 @@
+<main class="my-blogs-page">
+	<section class="my-blogs-header">
+		<div>
+			<span class="eyebrow">Your writing</span>
+			<h1>My blogs</h1>
+			<p>Manage the ideas and stories you have shared.</p>
+		</div>
+		<a mat-flat-button class="create-button" routerLink="/blogs/create">Create blog</a>
+	</section>
+
+	<section class="overview" aria-label="Blog overview">
+		<div class="overview-item">
+			<strong>{{ blogs().length }}</strong>
+			<span>{{ blogs().length === 1 ? 'Published blog' : 'Published blogs' }}</span>
+		</div>
+		<div class="overview-divider"></div>
+		<div class="overview-item">
+			<strong>Public</strong>
+			<span>Visibility</span>
+		</div>
+	</section>
+
+	@if (errorMessage()) {
+		<p class="error-message" role="alert">{{ errorMessage() }}</p>
+	} @else if (isLoading()) {
+		<p class="page-status">Loading your blogs...</p>
+	} @else if (blogs().length) {
+		<div class="mx-auto mb-6 grid w-full max-w-[1200px] grid-cols-1 items-center gap-4 sm:grid-cols-[minmax(0,1fr)_240px]">
+			<app-blog-search (queryChange)="onSearch($event)" />
+			<app-blog-sort (sortChange)="onSortChange($event)" />
+		</div>
+		@if (filteredBlogs().length) {
+			<section class="blogs-grid" aria-label="My published blogs">
+				@for (blog of filteredBlogs(); track blog.id) {
+					<app-blog-card
+						[blog]="blog"
+						[showVisibilityToggle]="true"
+						(deleted)="removeBlog($event)"
+						(visibilityChanged)="updateBlog($event)" />
+				}
+			</section>
+		} @else {
+			<p class="page-status">No blogs match that search.</p>
+		}
+	} @else {
+		<section class="empty-state">
+			<h2>Your blog shelf is empty</h2>
+			<p>Publish your first idea and it will appear here.</p>
+			<a mat-flat-button class="create-button" routerLink="/blogs/create">Write your first blog</a>
+		</section>
+	}
+</main>

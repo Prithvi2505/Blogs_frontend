@@ -1,0 +1,62 @@
+<article class="comment-card">
+  <header class="comment-header">
+    <div class="comment-byline">
+      <strong>{{ comment.author_name }}</strong>
+      <time [attr.datetime]="comment.created_at">{{ comment.created_at | date:'medium' }}</time>
+    </div>
+    <div class="comment-actions">
+      @if (auth.canEditComment(comment.user_id)) {
+        @if (!isEditing) {
+          <button mat-icon-button type="button" class="!h-9 !w-9 !text-[#087ea4]" aria-label="Edit comment" title="Edit comment" [disabled]="busy" (click)="startEdit()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        }
+      }
+      @if (auth.canDeleteComment(comment.user_id) && !isEditing) {
+        <button mat-icon-button type="button" class="!h-9 !w-9 !text-[#123447]" aria-label="Delete comment" title="Delete comment and replies" [disabled]="busy" (click)="deleteComment.emit(comment.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      }
+      @if (auth.canComment() && !isEditing) {
+        <button mat-icon-button type="button" class="!h-9 !w-9 !text-[#087ea4]" [attr.aria-label]="isReplying ? 'Cancel reply' : 'Reply to comment'" [title]="isReplying ? 'Cancel reply' : 'Reply'" [disabled]="busy" (click)="isReplying = !isReplying">
+          <mat-icon>comment</mat-icon>
+        </button>
+      }
+    </div>
+  </header>
+
+  @if (isEditing) {
+    <form class="inline-form" (ngSubmit)="saveEdit()">
+      <textarea [name]="'edit-' + comment.id" [(ngModel)]="editContent" rows="3" maxlength="5000" required></textarea>
+      <div class="form-actions">
+        <button type="button" class="text-action" (click)="isEditing = false">Cancel</button>
+        <button type="submit" class="submit-action" [disabled]="busy || !editContent.trim()">Save edit</button>
+      </div>
+    </form>
+  } @else {
+    <p class="comment-content">{{ comment.content }}</p>
+  }
+
+  @if (isReplying) {
+    <form class="inline-form reply-form" (ngSubmit)="sendReply()">
+      <textarea [name]="'reply-' + comment.id" [(ngModel)]="replyContent" rows="2" maxlength="5000" placeholder="Write a reply..." required></textarea>
+      <div class="form-actions">
+        <button type="button" class="text-action" (click)="isReplying = false">Cancel</button>
+        <button type="submit" class="submit-action" [disabled]="busy || !replyContent.trim()">Reply</button>
+      </div>
+    </form>
+  }
+
+  @if (comment.replies.length) {
+    <div class="comment-replies">
+      @for (reply of comment.replies; track reply.id) {
+        <app-comment-card
+          [comment]="reply"
+          [busy]="busy"
+          (replyComment)="replyComment.emit($event)"
+          (editComment)="editComment.emit($event)"
+          (deleteComment)="deleteComment.emit($event)" />
+      }
+    </div>
+  }
+</article>
