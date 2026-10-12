@@ -16,9 +16,6 @@ jobs:
   frontend:
     name: Test and build frontend
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend/Blogs
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
